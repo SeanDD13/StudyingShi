@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EA3: Prevención de Riesgos - ¡Estudio Súper Visual!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables CSS para colores */
+        :root {
+            --color-primary: #3498db; /* Azul vibrante */
+            --color-secondary: #2ecc71; /* Verde esmeralda */
+            --color-tertiary: #f39c12; /* Naranja cálido */
+            --color-background-light: #ecf0f1; /* Gris claro */
+            --color-text-dark: #2c3e50; /* Azul oscuro casi negro */
+            --color-text-light: #ecf0f1;
+            --color-card-bg-1: #eaf6ff; /* Azul muy claro para tarjetas Ley */
+            --color-card-border-1: #aed6f1;
+            --color-card-bg-2: #e8f8f5; /* Verde muy claro para tarjetas EPP/Señaletica */
+            --color-card-border-2: #a2d9ce;
+            --color-card-bg-3: #fffaf0; /* Crema muy claro para CPHS/Manual */
+            --color-card-border-3: #f5e7b2;
+            --color-button-hover: #2980b9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-background-light);
+            color: var(--color-text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--color-text-dark);
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2em;
+            border-bottom: 3px solid var(--color-primary);
+            padding-bottom: 15px;
+            margin-top: 50px;
+            color: var(--color-primary);
+        }
+
+        .nav-menu {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .nav-menu button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 0 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-menu button:hover {
+            background-color: var(--color-button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-content {
+            display: none;
+            padding-top: 20px;
+            animation: fadeIn 0.8s ease-out; /* Animación de aparición */
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            border-radius: 12px;
+            margin-bottom: 25px;
+            padding: 20px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* Para el efecto de expansión */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Colores de tarjetas por sección */
+        #ley .card {
+            background-color: var(--color-card-bg-1);
+            border: 1px solid var(--color-card-border-1);
+            border-left: 8px solid var(--color-primary);
+        }
+        #epp-senaletica .card {
+            background-color: var(--color-card-bg-2);
+            border: 1px solid var(--color-card-border-2);
+            border-left: 8px solid var(--color-secondary);
+        }
+        #cphs-manual .card {
+            background-color: var(--color-card-bg-3);
+            border: 1px solid var(--color-card-border-3);
+            border-left: 8px solid var(--color-tertiary);
+        }
+
+        .card h3 {
+            color: var(--color-text-dark);
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3::before {
+            content: '💡'; /* Icono por defecto */
+            font-size: 1.2em;
+            line-height: 1;
+        }
+        #ley .card h3::before { content: '📜'; }
+        #epp-senaletica .card h3::before { content: '🛡️'; }
+        #cphs-manual .card h3::before { content: '🤝'; }
+
+
+        .card-content {
+            /* Se ha eliminado 'display: none;' de aquí */
+            padding-top: 15px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+            font-size: 1em;
+            color: var(--color-text-dark);
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+            max-height: 0; /* Inicialmente colapsado */
+            opacity: 0; /* Inicialmente transparente */
+        }
+
+        .card-content.show {
+            max-height: 500px; /* Expande para mostrar contenido */
+            opacity: 1; /* Totalmente visible */
+            padding-bottom: 10px;
+        }
+
+        .card-content ul {
+            list-style-type: none; /* Quitamos las viñetas por defecto */
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        .card-content ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px; /* Espacio para el checkmark */
+        }
+
+        .card-content ul li::before {
+            content: '✅'; /* Checkmark visual */
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+        }
+
+        .card-content h4 {
+            color: var(--color-primary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            border-bottom: 1px dotted var(--color-primary);
+            padding-bottom: 5px;
+        }
+        
+        strong {
+            color: var(--color-primary); /* Resaltar términos clave */
+            font-weight: 700;
+        }
+
+        .underline {
+            text-decoration: underline;
+            text-decoration-color: var(--color-secondary);
+            text-decoration-thickness: 2px;
+        }
+
+        /* Señaléticas */
+        .signaletica-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .signaletica-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .signaletica-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .signaletica-card h4 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            color: var(--color-text-dark);
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .signaletica-example {
+            width: 120px;
+            height: 120px;
+            border: 3px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em; /* Tamaño grande para los emojis */
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0; /* Evita que el contenedor del ejemplo se encoja */
+        }
+
+        .signaletica-example.prohibicion {
+            background-color: #e74c3c; /* Rojo */
+            border-radius: 50%;
+            border-color: #e74c3c;
+        }
+        .signaletica-example.prohibicion::after {
+            content: '🚫';
+            position: absolute;
+            font-size: 0.9em;
+            color: white;
+            transform: scale(1.5);
+        }
+
+        .signaletica-example.obligacion {
+            background-color: #3498db; /* Azul */
+            border-radius: 50%;
+            border-color: #3498db;
+        }
+        .signaletica-example.obligacion::after {
+            content: '💡'; /* Ojo, guante, etc. para obligación */
+            position: absolute;
+            font-size: 0.9em;
+            color: white;
+            transform: scale(1.5);
+        }
+
+        .signaletica-example.advertencia {
+            background-color: #f1c40f; /* Amarillo */
+            border-radius: 5%; /* Pequeño redondeo */
+            border-color: #f1c40f;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* Triángulo */
+            width: 140px; /* Ajuste para que el triángulo sea más ancho */
+            height: 120px;
+        }
+        .signaletica-example.advertencia span {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            color: var(--color-text-dark);
+        }
+
+        .signaletica-example.salvamento {
+            background-color: #27ae60; /* Verde */
+            border-radius: 8px; /* Cuadrado con bordes redondeados */
+            border-color: #27ae60;
+        }
+        .signaletica-example.salvamento::after {
+            content: '⛑️'; /* Cruz o casco de salvamento */
+            position: absolute;
+            font-size: 0.9em;
+            color: white;
+            transform: scale(1.5);
+        }
+
+        /* Lista de EPP */
+        .epp-list ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .epp-list ul li {
+            background-color: var(--color-secondary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .epp-list ul li:hover {
+            transform: translateX(5px);
+        }
+        .epp-list ul li::before {
+            content: '✨'; /* Emoji para cada EPP */
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        /* Estilos para las nuevas características de IA */
+        .llm-features {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+        .llm-button {
+            background-color: #7f8c8d; /* Gris para los botones de IA */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .llm-button:hover {
+            background-color: #59646c;
+            transform: translateY(-2px);
+        }
+        .llm-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 50px; /* Asegura un espacio mínimo para la salida */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-dark);
+            font-style: italic;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out; /* Animación para la aparición del texto */
+        }
+        .loading-spinner {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--color-primary);
+            animation: pulse 1.5s infinite ease-in-out; /* Animación de pulsación */
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📚 ¡Prepárate para la EA3 con facilidad! 🚀</h1>
+        <h2>Tu Guía Visual para: Prevención de Riesgos Laborales</h2>
+
+        <!-- Menú de navegación principal con botones vibrantes -->
+        <div class="nav-menu">
+            <button onclick="showSection('ley')">📜 Ley 16.744</button>
+            <button onclick="showSection('epp-senaletica')">⚠️ EPP y Señaléticas</button>
+            <button onclick="showSection('cphs-manual')">🤝 CPHS y Manual</button>
+        </div>
+
+        <!-- Sección 1: Ley 16.744 - Con un toque de azul primario -->
+        <div id="ley" class="section-content active">
+            <h2>1. Ley 16.744: La Base de la Prevención 💡</h2>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>¿Qué es la Ley 16.744?</h3>
+                <div class="card-content">
+                    <p>Esta ley establece un <strong class="underline">seguro social obligatorio</strong> contra **accidentes de trabajo** y **enfermedades profesionales**.</p>
+                    <h4>📜 Antecedentes Clave en Chile:</h4>
+                    <ul>
+                        <li><strong>Ley 3.170 (1916):</strong> La responsabilidad de accidentes era **patronal**, seguros opcionales.</li>
+                        <li><strong>Ley 4.055 (1925):</strong> Se eliminan los juicios, se incluyen **enfermedades profesionales**.</li>
+                        <li><strong><span class="underline">Ley 16.744 (1968):</span></strong> Cambia de un concepto <strong class="underline">reparativo</strong> a uno <strong class="underline">preventivo</strong>. De "pérdidas funcionales" a "pérdida de capacidad de ganancia".</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>🎯 Objetivos de la Ley (5 Pilares)</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Prevenir:</strong> Evitar accidentes y enfermedades profesionales.</li>
+                        <li><strong>Curar:</strong> Prestaciones médicas y restituir capacidad de trabajo.</li>
+                        <li><strong>Indemnizar:</strong> Reparar la pérdida de sustento económico.</li>
+                        <li><strong>Rehabilitar:</strong> Recuperar la capacidad de generar ganancia.</li>
+                        <li><strong>Reeducar:</strong> Reinsertar al trabajador en el ámbito laboral.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>💰 Tipos de Prestaciones (Beneficios)</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Médicas:</strong> Atención médica, quirúrgica, dental, hospitalización, medicamentos, prótesis, rehabilitación física.</li>
+                        <li><strong>Preventivas:</strong> Estudios de riesgo, asesorías, capacitaciones para la prevención.</li>
+                        <li><strong>Económicas:</strong> Subsidios, indemnizaciones, pensiones, y pensiones por supervivencia.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>📝 Obligaciones de Todos</h3>
+                <div class="card-content">
+                    <h4>Estado:</h4>
+                    <ul>
+                        <li><strong class="underline">Fiscalizar</strong> prevención, higiene y seguridad.</li>
+                        <li>Establecer normas y aplicar sanciones.</li>
+                    </ul>
+                    <h4>Empresa:</h4>
+                    <ul>
+                        <li>Cumplir el <strong class="underline">derecho a saber</strong> (informar riesgos).</li>
+                        <li>Establecer medidas de prevención.</li>
+                        <li>Actualizar <strong class="underline">Reglamento Interno de Higiene y Seguridad</strong>.</li>
+                        <li>Crear <strong class="underline">Departamento de Prevención de Riesgos</strong> (si +100 trabajadores).</li>
+                        <li>Formar <strong class="underline">Comité Paritario</strong> (si +25 trabajadores).</li>
+                        <li>Proporcionar <strong class="underline">Elementos de Protección Personal (EPP)</strong>.</li>
+                        <li>Mantener <strong class="underline">estadísticas de siniestralidad</strong>.</li>
+                    </ul>
+                    <h4>Trabajadores:</h4>
+                    <ul>
+                        <li>Cumplir reglamento interno y normas.</li>
+                        <li><strong class="underline">Utilizar y cuidar los EPP</strong>.</li>
+                        <li>Acudir a exámenes médicos y participar en actividades preventivas.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>🌈 Principios Fundamentales de la Ley</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Solidaridad:</strong> Aportes distribuidos equitativamente.</li>
+                        <li><strong>Universalidad:</strong> Protege a <strong class="underline">todos los trabajadores</strong> (¡incluidos estudiantes!).</li>
+                        <li><strong>Integridad:</strong> Todos los recursos se destinan al trabajador, desde prevención hasta prestaciones.</li>
+                        <li><strong>Igualdad:</strong> Mismos derechos y beneficios para todos.</li>
+                        <li><strong>Subsidiaridad:</strong> Aseguramiento estatal.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>⚠️ Accidente de Trabajo y de Trayecto</h3>
+                <div class="card-content">
+                    <h4>Accidente de Trabajo:</h4>
+                    <ul>
+                        <li><strong>Definición:</strong> Lesión a <strong class="underline">causa o con ocasión del trabajo</strong> que produce incapacidad o muerte.</li>
+                        <li>**Características:** <span class="underline">Inimputable</span> (no hay culpable), <span class="underline">Imprevisible</span>, <span class="underline">Insuperable</span>.</li>
+                        <li>**Excepciones:** Fuerza Mayor Extraña (sin relación con trabajo) o intencionalidad de la víctima.</li>
+                    </ul>
+                    <h4>Accidente de Trayecto:</h4>
+                    <ul>
+                        <li>Ocurridos en el <strong class="underline">trayecto directo</strong> entre habitación y lugar de trabajo (y viceversa).</li>
+                        <li><strong class="underline">Trayecto directo:</strong> Recorrido racional y no interrumpido/desviado.</li>
+                        <li>**Importante:** El trabajador debe <strong class="underline">probar</strong> que ocurrió en trayecto directo.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>😷 Enfermedad Profesional</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Definición:</strong> La causada de manera directa por el ejercicio de la profesión o el trabajo que realice una persona y que le produzca incapacidad o muerte.</li>
+                        <li>**Características:** Alteración de la salud, relación directa de causa-efecto, incapacidad/muerte, y debe estar en el **Decreto Supremo Nº 109** o probada según la Ley 16.744.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+        </div> <!-- Fin de sección Ley 16.744 -->
+
+        <!-- Sección 2: EPP y Señaléticas - Con un toque de verde esmeralda -->
+        <div id="epp-senaletica" class="section-content">
+            <h2>2. 🚨 EPP y Señaléticas de Seguridad: ¡Protección Visual!</h2>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>🚦 Señaléticas de Seguridad: Entendiendo los Mensajes</h3>
+                <div class="card-content">
+                    <p>Conjunto de estímulos que condicionan la actuación para la seguridad.</p>
+                    <h4>Clasificación (¡Fíjate en la Forma y Color!):</h4>
+                    <div class="signaletica-grid">
+                        <div class="signaletica-card">
+                            <h4>🚫 Prohibición</h4>
+                            <div class="signaletica-example prohibicion"></div>
+                            <p>**Forma:** <strong class="underline">Redonda</strong><br>**Color:** Pictograma negro sobre fondo blanco, borde y banda transversal <strong style="color: #e74c3c;">roja</strong>.</p>
+                        </div>
+                        <div class="signaletica-card">
+                            <h4>🔵 Obligación</h4>
+                            <div class="signaletica-example obligacion"></div>
+                            <p>**Forma:** <strong class="underline">Redonda</strong><br>**Color:** Pictograma blanco sobre fondo <strong style="color: #3498db;">azul</strong>.</p>
+                        </div>
+                        <div class="signaletica-card">
+                            <h4>⚠️ Advertencia</h4>
+                            <div class="signaletica-example advertencia"><span>⚠️</span></div>
+                            <p>**Forma:** <strong class="underline">Triangular</strong><br>**Color:** Pictograma negro sobre fondo <strong style="color: #f1c40f;">amarillo</strong>.</p>
+                        </div>
+                        <div class="signaletica-card">
+                            <h4>➕ Salvamento</h4>
+                            <div class="signaletica-example salvamento"></div>
+                            <p>**Forma:** <strong class="underline">Rectangular o Cuadrada</strong><br>**Color:** Pictograma blanco sobre fondo <strong style="color: #27ae60;">verde</strong>.</p>
+                        </div>
+                    </div>
+                    <p><em>👉 <strong class="underline">¡Importante!</strong> Respetar las señaléticas es clave para prevenir accidentes.</em></p>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>👷‍♀️ Elementos de Protección Personal (EPP): Tu Escudo</h3>
+                <div class="card-content epp-list">
+                    <p>Artículos diseñados para ser una <strong class="underline">barrera de protección</strong> entre tu cuerpo y los riesgos externos.</p>
+                    <h4>EPP Indispensables en Gastronomía:</h4>
+                    <ul>
+                        <li><span role="img" aria-label="Gorro de cocina">👨‍🍳</span> **Cabeza:** Gorro o cofia.</li>
+                        <li><span role="img" aria-label="Mascarilla">😷</span> **Respiratoria:** Tapabocas de tela.</li>
+                        <li><span role="img" aria-label="Guantes">🧤</span> **Manos y Brazos:** Guantes.</li>
+                        <li><span role="img" aria-label="Zapatos de seguridad">👞</span> **Pies:** Zapato cerrado de cuero con suela de caucho adherente.</li>
+                        <li><span role="img" aria-label="Delantal"> apron</span> **Corporal:** Delantal impermeable, pantalón (algodón), chaqueta (para cuartos fríos).</li>
+                        <li><span role="img" aria-label="Protector de oído">👂</span> **Auditiva:** Protección auditiva anatómica.</li>
+                    </ul>
+                    <p><em>👉 <strong class="underline">¡Fundamental!</strong> Usar los EPP previene accidentes y enfermedades profesionales.</em></p>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+        </div> <!-- Fin de sección EPP y Señalética -->
+
+        <!-- Sección 3: CPHS y Manual - Con un toque de naranja cálido -->
+        <div id="cphs-manual" class="section-content">
+            <h2>3. 🛠️ CPHS y Manual de Higiene y Seguridad: La Organización Preventiva</h2>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>🤝 Comité Paritario de Higiene y Seguridad (CPHS)</h3>
+                <div class="card-content">
+                    <p><strong>Definición y Objetivo:</strong> Organismo <strong class="underline">técnico de participación</strong> entre empresa y trabajadores, su fin es <strong class="underline">detectar y evaluar riesgos</strong> de accidentes y enfermedades profesionales.</p>
+                    <h4>Regulación:</h4>
+                    <ul>
+                        <li>Nace del Art. 66 de la Ley Nº 16.744 (1969), regulado por el Decreto Nº 54.</li>
+                    </ul>
+                    <h4>Funciones Principales:</h4>
+                    <ul>
+                        <li><strong class="underline">Asesorar</strong> e instruir a trabajadores sobre uso correcto de protección.</li>
+                        <li><strong class="underline">Vigilar</strong> el cumplimiento de medidas de prevención.</li>
+                        <li><strong class="underline">Investigar</strong> causas de accidentes y enfermedades profesionales.</li>
+                        <li>Decidir sobre negligencia inexcusable del trabajador.</li>
+                        <li>Promover capacitaciones.</li>
+                    </ul>
+                    <h4>Frecuencia de Reuniones:</h4>
+                    <ul>
+                        <li><strong>Ordinaria:</strong> <strong class="underline">Una vez al mes</strong>.</li>
+                        <li><strong>Extraordinaria:</strong> A petición de un representante de trabajadores y empresa, o en caso de accidente grave/fatal.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+
+            <div class="card" onclick="toggleCard(this)">
+                <h3>📖 Manual de Higiene y Seguridad</h3>
+                <div class="card-content">
+                    <p><strong>Concepto:</strong> Documento que <strong class="underline">informa sobre riesgos</strong> de accidentes/enfermedades y sugiere <strong class="underline">medidas preventivas</strong>.</p>
+                    <h4>Contenido Típico:</h4>
+                    <ul>
+                        <li>Manual y procedimientos de actividades preventivas.</li>
+                        <li>Instrucciones de trabajo y normas de seguridad.</li>
+                        <li>Registros.</li>
+                        <li>Identificación y evaluación de riesgos.</li>
+                        <li>Política de seguridad.</li>
+                        <li>Organización y planificación preventiva.</li>
+                    </ul>
+                    <div class="llm-features">
+                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                    </div>
+                    <div class="loading-spinner" style="display:none;">Cargando...</div>
+                    <div class="llm-output"></div>
+                </div>
+            </div>
+        </div> <!-- Fin de sección CPHS y Manual -->
+
+    </div>
+
+    <footer>
+        <p>✨ ¡Hecho con dedicación para que estudies y retengas mejor! ✨</p>
+        <p>Copyright © 2025 - Tu Ayudante AI</p>
+    </footer>
+
+    <script>
+        // Función para alternar la visibilidad del contenido de la tarjeta
+        function toggleCard(cardElement) {
+            const content = cardElement.querySelector('.card-content');
+            if (content) {
+                // Alterna la clase 'show' para controlar la visibilidad y animación
+                content.classList.toggle('show');
+                // Si la tarjeta se cierra, limpia la salida de la IA
+                if (!content.classList.contains('show')) {
+                    const outputDiv = content.querySelector('.llm-output');
+                    if (outputDiv) {
+                        outputDiv.innerHTML = '';
+                    }
+                }
+            }
+        }
+
+        // Función para mostrar una sección específica del menú
+        function showSection(sectionId) {
+            // Oculta todas las secciones
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                // También oculta y limpia la salida de la IA de las tarjetas en las secciones inactivas
+                const cardsInInactiveSection = section.querySelectorAll('.card-content');
+                cardsInInactiveSection.forEach(cardContent => {
+                    cardContent.classList.remove('show');
+                    const outputDiv = cardContent.querySelector('.llm-output');
+                    if (outputDiv) {
+                        outputDiv.innerHTML = '';
+                    }
+                });
+            });
+
+            // Muestra la sección deseada añadiendo la clase 'active'
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+        }
+
+        /**
+         * Llama a la API de Gemini para generar contenido (pregunta o resumen)
+         * @param {HTMLElement} buttonElement El botón que disparó la acción.
+         * @param {string} type El tipo de contenido a generar ('question' o 'summary').
+         */
+        async function generateContent(buttonElement, type) {
+            // Encuentra el contenedor de la tarjeta y los elementos de salida/carga
+            const cardContentDiv = buttonElement.closest('.card-content');
+            const outputDiv = cardContentDiv.querySelector('.llm-output');
+            const loadingDiv = cardContentDiv.querySelector('.loading-spinner');
+            
+            // Excluye los botones LLM y la salida LLM del contenido a procesar
+            let originalContent = cardContentDiv.cloneNode(true);
+            originalContent.querySelectorAll('.llm-features, .llm-output, .loading-spinner').forEach(el => el.remove());
+            originalContent = originalContent.innerText;
+
+            // Muestra el spinner de carga
+            loadingDiv.style.display = 'block';
+            outputDiv.innerHTML = ''; // Limpia la salida anterior
+
+            let prompt = "";
+            if (type === 'question') {
+                prompt = `Genera UNA pregunta de examen corta, o de tipo test (si aplicable), basada EXCLUSIVAMENTE en el siguiente contenido sobre prevención de riesgos laborales. Asegúrate de que la pregunta sea concisa y evalúe la comprensión del texto. Contenido: "${originalContent}"`;
+            } else if (type === 'summary') {
+                prompt = `Resume el siguiente contenido sobre prevención de riesgos laborales de manera muy concisa (máximo 2-3 frases) y fácil de entender. Contenido: "${originalContent}"`;
+            }
+
+            const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // La clave API será inyectada por el entorno de Canvas.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    outputDiv.innerHTML = `<p>${text}</p>`;
+                } else {
+                    outputDiv.innerHTML = "<p>Error: No se pudo generar contenido. Inténtalo de nuevo o ajusta la pregunta.</p>";
+                }
+            } catch (error) {
+                console.error("Error al llamar a la API de Gemini:", error);
+                outputDiv.innerHTML = "<p>Error al conectar con la IA. Por favor, revisa tu conexión o intenta más tarde.</p>";
+            } finally {
+                loadingDiv.style.display = 'none'; // Oculta el spinner de carga
+            }
+        }
+
+        // Mostrar la primera sección por defecto al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('ley');
+        });
+    </script>
+
+</body>
+</html>
