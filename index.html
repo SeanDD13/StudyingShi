@@ -159,7 +159,6 @@
 
 
         .card-content {
-            /* Se ha eliminado 'display: none;' de aquí */
             padding-top: 15px;
             border-top: 1px dashed rgba(0, 0, 0, 0.1);
             margin-top: 15px;
@@ -172,7 +171,7 @@
         }
 
         .card-content.show {
-            max-height: 500px; /* Expande para mostrar contenido */
+            max-height: 1000px; /* Incrementado para dar más espacio */
             opacity: 1; /* Totalmente visible */
             padding-bottom: 10px;
         }
@@ -381,13 +380,14 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
-            min-height: 50px; /* Asegura un espacio mínimo para la salida */
+            min-height: 100px; /* Asegura un espacio mínimo inicial */
             display: flex;
             align-items: center;
-            justify-content: center;
             color: var(--color-text-dark);
             font-style: italic;
-            text-align: center;
+            text-align: left; /* Alineación a la izquierda para mejor lectura */
+            overflow-y: auto; /* Permite desplazamiento vertical si el contenido es largo */
+            max-height: 200px; /* Altura máxima antes de que aparezca la barra de desplazamiento */
             animation: fadeIn 0.5s ease-out; /* Animación para la aparición del texto */
         }
         .loading-spinner {
@@ -435,16 +435,17 @@
             <div class="card" onclick="toggleCard(this)">
                 <h3>¿Qué es la Ley 16.744?</h3>
                 <div class="card-content">
-                    <p>Esta ley establece un <strong class="underline">seguro social obligatorio</strong> contra **accidentes de trabajo** y **enfermedades profesionales**.</p>
+                    <p>Esta ley establece un <strong class="underline">seguro social obligatorio</strong> contra <strong>accidentes de trabajo</strong> y <strong>enfermedades profesionales</strong>.</p>
                     <h4>📜 Antecedentes Clave en Chile:</h4>
                     <ul>
-                        <li><strong>Ley 3.170 (1916):</strong> La responsabilidad de accidentes era **patronal**, seguros opcionales.</li>
-                        <li><strong>Ley 4.055 (1925):</strong> Se eliminan los juicios, se incluyen **enfermedades profesionales**.</li>
+                        <li><strong>Ley 3.170 (1916):</strong> La responsabilidad de accidentes era <strong>patronal</strong>, seguros opcionales.</li>
+                        <li><strong>Ley 4.055 (1925):</strong> Se eliminan los juicios, se incluyen <strong>enfermedades profesionales</strong>.</li>
                         <li><strong><span class="underline">Ley 16.744 (1968):</span></strong> Cambia de un concepto <strong class="underline">reparativo</strong> a uno <strong class="underline">preventivo</strong>. De "pérdidas funcionales" a "pérdida de capacidad de ganancia".</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -462,8 +463,9 @@
                         <li><strong>Reeducar:</strong> Reinsertar al trabajador en el ámbito laboral.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -479,8 +481,9 @@
                         <li><strong>Económicas:</strong> Subsidios, indemnizaciones, pensiones, y pensiones por supervivencia.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -500,10 +503,10 @@
                         <li>Cumplir el <strong class="underline">derecho a saber</strong> (informar riesgos).</li>
                         <li>Establecer medidas de prevención.</li>
                         <li>Actualizar <strong class="underline">Reglamento Interno de Higiene y Seguridad</strong>.</li>
-                        <li>Crear <strong class="underline">Departamento de Prevención de Riesgos</strong> (si +100 trabajadores).</li>
-                        <li>Formar <strong class="underline">Comité Paritario</strong> (si +25 trabajadores).</li>
-                        <li>Proporcionar <strong class="underline">Elementos de Protección Personal (EPP)</strong>.</li>
-                        <li>Mantener <strong class="underline">estadísticas de siniestralidad</strong>.</li>
+                        <li>Crear <strong>Departamento de Prevención de Riesgos</strong> (si +100 trabajadores).</li>
+                        <li>Formar <strong>Comité Paritario</strong> (si +25 trabajadores).</li>
+                        <li>Proporcionar <strong>Elementos de Protección Personal (EPP)</strong>.</li>
+                        <li>Mantener <strong>estadísticas de siniestralidad</strong>.</li>
                     </ul>
                     <h4>Trabajadores:</h4>
                     <ul>
@@ -512,8 +515,9 @@
                         <li>Acudir a exámenes médicos y participar en actividades preventivas.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -531,8 +535,9 @@
                         <li><strong>Subsidiaridad:</strong> Aseguramiento estatal.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -545,18 +550,19 @@
                     <h4>Accidente de Trabajo:</h4>
                     <ul>
                         <li><strong>Definición:</strong> Lesión a <strong class="underline">causa o con ocasión del trabajo</strong> que produce incapacidad o muerte.</li>
-                        <li>**Características:** <span class="underline">Inimputable</span> (no hay culpable), <span class="underline">Imprevisible</span>, <span class="underline">Insuperable</span>.</li>
-                        <li>**Excepciones:** Fuerza Mayor Extraña (sin relación con trabajo) o intencionalidad de la víctima.</li>
+                        <li><strong>Características:</strong> <span class="underline">Inimputable</span> (no hay culpable), <span class="underline">Imprevisible</span>, <span class="underline">Insuperable</span>.</li>
+                        <li><strong>Excepciones:</strong> Fuerza Mayor Extraña (sin relación con trabajo) o intencionalidad de la víctima.</li>
                     </ul>
                     <h4>Accidente de Trayecto:</h4>
                     <ul>
                         <li>Ocurridos en el <strong class="underline">trayecto directo</strong> entre habitación y lugar de trabajo (y viceversa).</li>
                         <li><strong class="underline">Trayecto directo:</strong> Recorrido racional y no interrumpido/desviado.</li>
-                        <li>**Importante:** El trabajador debe <strong class="underline">probar</strong> que ocurrió en trayecto directo.</li>
+                        <li><strong>Importante:</strong> El trabajador debe <strong class="underline">probar</strong> que ocurrió en trayecto directo.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -568,11 +574,12 @@
                 <div class="card-content">
                     <ul>
                         <li><strong>Definición:</strong> La causada de manera directa por el ejercicio de la profesión o el trabajo que realice una persona y que le produzca incapacidad o muerte.</li>
-                        <li>**Características:** Alteración de la salud, relación directa de causa-efecto, incapacidad/muerte, y debe estar en el **Decreto Supremo Nº 109** o probada según la Ley 16.744.</li>
+                        <li><strong>Características:</strong> Alteración de la salud, relación directa de causa-efecto, incapacidad/muerte, y debe estar en el <strong>Decreto Supremo Nº 109</strong> o probada según la Ley 16.744.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -594,28 +601,29 @@
                         <div class="signaletica-card">
                             <h4>🚫 Prohibición</h4>
                             <div class="signaletica-example prohibicion"></div>
-                            <p>**Forma:** <strong class="underline">Redonda</strong><br>**Color:** Pictograma negro sobre fondo blanco, borde y banda transversal <strong style="color: #e74c3c;">roja</strong>.</p>
+                            <p><strong>Forma:</strong> <strong class="underline">Redonda</strong><br><strong>Color:</strong> Pictograma negro sobre fondo blanco, borde y banda transversal <strong style="color: #e74c3c;">roja</strong>.</p>
                         </div>
                         <div class="signaletica-card">
                             <h4>🔵 Obligación</h4>
                             <div class="signaletica-example obligacion"></div>
-                            <p>**Forma:** <strong class="underline">Redonda</strong><br>**Color:** Pictograma blanco sobre fondo <strong style="color: #3498db;">azul</strong>.</p>
+                            <p><strong>Forma:</strong> <strong class="underline">Redonda</strong><br><strong>Color:</strong> Pictograma blanco sobre fondo <strong style="color: #3498db;">azul</strong>.</p>
                         </div>
                         <div class="signaletica-card">
                             <h4>⚠️ Advertencia</h4>
                             <div class="signaletica-example advertencia"><span>⚠️</span></div>
-                            <p>**Forma:** <strong class="underline">Triangular</strong><br>**Color:** Pictograma negro sobre fondo <strong style="color: #f1c40f;">amarillo</strong>.</p>
+                            <p><strong>Forma:</strong> <strong class="underline">Triangular</strong><br><strong>Color:</strong> Pictograma negro sobre fondo <strong style="color: #f1c40f;">amarillo</strong>.</p>
                         </div>
                         <div class="signaletica-card">
                             <h4>➕ Salvamento</h4>
                             <div class="signaletica-example salvamento"></div>
-                            <p>**Forma:** <strong class="underline">Rectangular o Cuadrada</strong><br>**Color:** Pictograma blanco sobre fondo <strong style="color: #27ae60;">verde</strong>.</p>
+                            <p><strong>Forma:</strong> <strong class="underline">Rectangular o Cuadrada</strong><br><strong>Color:</strong> Pictograma blanco sobre fondo <strong style="color: #27ae60;">verde</strong>.</p>
                         </div>
                     </div>
                     <p><em>👉 <strong class="underline">¡Importante!</strong> Respetar las señaléticas es clave para prevenir accidentes.</em></p>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -628,17 +636,18 @@
                     <p>Artículos diseñados para ser una <strong class="underline">barrera de protección</strong> entre tu cuerpo y los riesgos externos.</p>
                     <h4>EPP Indispensables en Gastronomía:</h4>
                     <ul>
-                        <li><span role="img" aria-label="Gorro de cocina">👨‍🍳</span> **Cabeza:** Gorro o cofia.</li>
-                        <li><span role="img" aria-label="Mascarilla">😷</span> **Respiratoria:** Tapabocas de tela.</li>
-                        <li><span role="img" aria-label="Guantes">🧤</span> **Manos y Brazos:** Guantes.</li>
-                        <li><span role="img" aria-label="Zapatos de seguridad">👞</span> **Pies:** Zapato cerrado de cuero con suela de caucho adherente.</li>
-                        <li><span role="img" aria-label="Delantal"> apron</span> **Corporal:** Delantal impermeable, pantalón (algodón), chaqueta (para cuartos fríos).</li>
-                        <li><span role="img" aria-label="Protector de oído">👂</span> **Auditiva:** Protección auditiva anatómica.</li>
+                        <li><span role="img" aria-label="Gorro de cocina">👨‍🍳</span> <strong>Cabeza:</strong> Gorro o cofia.</li>
+                        <li><span role="img" aria-label="Mascarilla">😷</span> <strong>Respiratoria:</strong> Tapabocas de tela.</li>
+                        <li><span role="img" aria-label="Guantes">🧤</span> <strong>Manos y Brazos:</strong> Guantes.</li>
+                        <li><span role="img" aria-label="Zapatos de seguridad">👞</span> <strong>Pies:</strong> Zapato cerrado de cuero con suela de caucho adherente.</li>
+                        <li><span role="img" aria-label="Delantal"> apron</span> <strong>Corporal:</strong> Delantal impermeable, pantalón (algodón), chaqueta (para cuartos fríos).</li>
+                        <li><span role="img" aria-label="Protector de oído">👂</span> <strong>Auditiva:</strong> Protección auditiva anatómica.</li>
                     </ul>
                     <p><em>👉 <strong class="underline">¡Fundamental!</strong> Usar los EPP previene accidentes y enfermedades profesionales.</em></p>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -672,8 +681,9 @@
                         <li><strong>Extraordinaria:</strong> A petición de un representante de trabajadores y empresa, o en caso de accidente grave/fatal.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -694,8 +704,9 @@
                         <li>Organización y planificación preventiva.</li>
                     </ul>
                     <div class="llm-features">
-                        <button class="llm-button" onclick="generateContent(this, 'question')">Generar Pregunta ✨</button>
-                        <button class="llm-button" onclick="generateContent(this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'question')">Generar Pregunta ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'summary')">Resumir Contenido ✨</button>
+                        <button class="llm-button" onclick="generateContent(event, this, 'explainSimply')">Explicar Sencillo ✨</button>
                     </div>
                     <div class="loading-spinner" style="display:none;">Cargando...</div>
                     <div class="llm-output"></div>
@@ -753,10 +764,14 @@
 
         /**
          * Llama a la API de Gemini para generar contenido (pregunta o resumen)
+         * @param {Event} event El objeto de evento del clic.
          * @param {HTMLElement} buttonElement El botón que disparó la acción.
          * @param {string} type El tipo de contenido a generar ('question' o 'summary').
          */
-        async function generateContent(buttonElement, type) {
+        async function generateContent(event, buttonElement, type) {
+            // Previene el comportamiento por defecto del botón (ej. recargar la página)
+            event.preventDefault(); 
+
             // Encuentra el contenedor de la tarjeta y los elementos de salida/carga
             const cardContentDiv = buttonElement.closest('.card-content');
             const outputDiv = cardContentDiv.querySelector('.llm-output');
@@ -776,6 +791,8 @@
                 prompt = `Genera UNA pregunta de examen corta, o de tipo test (si aplicable), basada EXCLUSIVAMENTE en el siguiente contenido sobre prevención de riesgos laborales. Asegúrate de que la pregunta sea concisa y evalúe la comprensión del texto. Contenido: "${originalContent}"`;
             } else if (type === 'summary') {
                 prompt = `Resume el siguiente contenido sobre prevención de riesgos laborales de manera muy concisa (máximo 2-3 frases) y fácil de entender. Contenido: "${originalContent}"`;
+            } else if (type === 'explainSimply') {
+                prompt = `Reescribe el siguiente contenido sobre prevención de riesgos laborales en términos muy sencillos y fáciles de entender, como si se lo explicaras a alguien que no conoce el tema. Contenido: "${originalContent}"`;
             }
 
             const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
